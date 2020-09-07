@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pagesG3
+  name: pages
+  namespace: gamma3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pagesG3
+  strategy: {}
+  template: 
+    metadata:
+      labels:
+        app: pagesG3
+    spec:
+      containers:
+      - image: aksjabindocker/pages:1.0
+        name: pages
+        ports:
+          - containerPort: 8080

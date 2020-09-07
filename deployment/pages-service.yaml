@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pagesG3
+  name: pages
+  namespace: gamma3
+spec:
+  ports:
+  - name: pages-service-port
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: pagesG3
+  type: NodePort
