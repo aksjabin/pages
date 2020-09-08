@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: pages
+    app: pagesG3
   name: pages
-  namespace: [student-name]
+  namespace: gamma3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pages
+      app: pagesG3
   strategy: {}
   template:
     metadata:
       labels:
-        app: pages
+        app: pagesG3
     spec:
       containers:
-        - image: [docker-username]/pages:[tag]
+        - image: aksjabindocker/pages:db
           name: pages
           ports:
             - containerPort: 8080
