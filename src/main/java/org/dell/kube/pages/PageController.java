@@ -3,10 +3,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/pages")
 public class PageController {
     private IPageRepository pageRepository;
+
+    Logger logger =(Logger)LoggerFactory.getLogger(this.getClass());
 
     public PageController(IPageRepository pageRepository) {
         this.pageRepository = pageRepository;
@@ -15,21 +19,30 @@ public class PageController {
     @PostMapping
     public ResponseEntity<Page> create(@RequestBody Page page) {
         Page newPage = pageRepository.create(page);
+        logger.info("Fetch-INFO:Fetching page with id = " );
+        logger.debug("Fetch-DEBUG:Fetching page with id = ");
         return new ResponseEntity<Page>(newPage, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Page> read(@PathVariable long id) {
+
+        logger.info("READ-INFO:Fetching page with id = " + id);
+        logger.debug("READ-DEBUG:Fetching page with id = " + id);
+
         Page page = pageRepository.read(id);
-        if (page != null)
+        if(page!=null)
             return new ResponseEntity<Page>(page, HttpStatus.OK);
-        else
+        else {
+            logger.error("READ-ERROR:Could not find page with id = " + id);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<Page>> list() {
         List<Page> pages = pageRepository.list();
+        logger.info("Listed the values " + pages.size());
         return new ResponseEntity<List<Page>>(pages, HttpStatus.OK);
     }
 
@@ -45,6 +58,8 @@ public class PageController {
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable long id) {
         pageRepository.delete(id);
+        logger.info("Deleting page with id = " + id);
+        logger.debug("Deleting page with id = " + id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
